@@ -1,12 +1,14 @@
 const myLibrary = [] //Books Array
 
-
-function Book(name, author, pages, read) { // Books Object
-    this.name = name;
-    this.author = author;
-    this.pages = pages;
-    this.read = read
+class Book {
+    constructor(name, author, pages, read) {
+        this.name = name;
+        this.author = author;
+        this.pages = pages;
+        this.read = read
+    }
 }
+
 
 const handleAddBookButtonClick = () => {
     const dialog = document.getElementById("modal")
@@ -28,7 +30,7 @@ const handleAddBookButtonClick = () => {
         }
     });
     const close = document.getElementById("close")
-    close.addEventListener('click',()=>{
+    close.addEventListener('click', () => {
         dialog.close()
     })
 }
@@ -56,7 +58,7 @@ const getBookInfo = () => { //get the values of the inputs
 
 }
 
-const createHtmlElement = (type, className, innerHTML) => { //function to create HTML elements easily 
+/* const createHtmlElement = (type, className, innerHTML) => { //function to create HTML elements easily 
     const element = document.createElement(type)
 
     element.type = type,
@@ -65,6 +67,19 @@ const createHtmlElement = (type, className, innerHTML) => { //function to create
 
     return element
 
+} */
+
+class createHtmlElement {
+    constructor(type, className, innerHTML){
+
+        const element = document.createElement(type)
+
+        element.type = type,
+        element.className = className,
+        element.innerHTML = innerHTML
+        
+        return element
+    }
 }
 
 
@@ -74,29 +89,29 @@ const addBooktoList = () => {
     bookList.innerHTML = ""
 
     myLibrary.forEach((book, index) => {
-        const bookContainer = createHtmlElement("div", "bookContainer", "") //create the main div for the book
+        const bookContainer = new createHtmlElement("div", "bookContainer", "") //create the main div for the book
 
         bookList.appendChild(bookContainer)
         bookContainer.setAttribute("data-index", index) //associates the book with it's index
 
-        bookContainer.appendChild(createHtmlElement("p", "bookName", book.name))
-        bookContainer.appendChild(createHtmlElement("p", "bookAuthor", `By ${book.author}`))
-        bookContainer.appendChild(createHtmlElement("p", "bookpages", `${book.pages} Pages`))
+        bookContainer.appendChild(new createHtmlElement("p", "bookName", book.name))
+        bookContainer.appendChild(new createHtmlElement("p", "bookAuthor", `By ${book.author}`))
+        bookContainer.appendChild(new createHtmlElement("p", "bookpages", `${book.pages} Pages`))
 
-        const bookReadedDiv = createHtmlElement("div", "bookReadedDiv", "")
+        const bookReadedDiv = new createHtmlElement("div", "bookReadedDiv", "")
         bookContainer.appendChild(bookReadedDiv)
 
-        const bookReaded = createHtmlElement("button", "bookReaded", "Not Readed")
-        
+        const bookReaded = new createHtmlElement("button", "bookReaded", "Not Readed")
+
         bookReadedDiv.appendChild(bookReaded)
         bookReaded.addEventListener('click', () => {
-            if(bookReaded.innerHTML === "Not Readed" ){
-                bookReaded.style.backgroundColor = "rgba(11, 187, 84, 0.541)"  
+            if (bookReaded.innerHTML === "Not Readed") {
+                bookReaded.style.backgroundColor = "rgba(11, 187, 84, 0.541)"
                 bookReaded.innerHTML = "Readed!"
                 bookContainer.style.borderLeft = "6px solid rgb(13, 196, 104)"
             }
-            else{
-                bookReaded.style.backgroundColor = "rgba(169,3,41, 0.541)"  
+            else {
+                bookReaded.style.backgroundColor = "rgba(169,3,41, 0.541)"
                 bookReaded.innerHTML = "Not Readed"
                 bookContainer.style.borderLeft = "6px solid rgba(169,3,41,1)"
             }
@@ -106,26 +121,26 @@ const addBooktoList = () => {
             bookReaded.innerHTML = "Readed!"
             bookReaded.style.backgroundColor = "rgba(11, 187, 84, 0.541)"
             bookContainer.style.borderLeft = "6px solid rgb(13, 196, 104)"
-            
-            
+
+
         }
-        const btnDiv = createHtmlElement("div","btnDiv","")
+        const btnDiv = new createHtmlElement("div", "btnDiv", "")
         bookContainer.appendChild(btnDiv)
 
-        const deleteBook = createHtmlElement("button", "deleteBook", "");
+        const deleteBook = new createHtmlElement("button", "deleteBook", "");
         deleteBook.innerHTML = '<i class="fas fa-trash"></i>'; // Replace text with delete icon
         btnDiv.appendChild(deleteBook);
         deleteBook.addEventListener('click', () => {
             deleteFromLibrary(index);
         });
 
-        const editBook = createHtmlElement("button", "editBook", "");
+        const editBook = new createHtmlElement("button", "editBook", "");
         editBook.innerHTML = '<i class="fas fa-edit"></i>'; // Replace text with edit icon
         btnDiv.appendChild(editBook);
         editBook.addEventListener('click', () => {
             editCurrentBook(book, index);
         });
-        
+
     });
 };
 const deleteFromLibrary = (index) => {
@@ -158,15 +173,15 @@ const editCurrentBook = (book, index) => {
 
     const bookRead = document.getElementById("editBookRead").checked = book.read
 
-    
+
 
 }
 const editClose = document.getElementById("editClose")
-    editClose.addEventListener('click',()=>{
-        const editDialog = document.getElementById("editModal")
+editClose.addEventListener('click', () => {
+    const editDialog = document.getElementById("editModal")
     editDialog.showModal()
-        editDialog.close()
-    })
+    editDialog.close()
+})
 
 
 
@@ -180,7 +195,7 @@ editBookSubmit.addEventListener('click', (event) => {
     const book = myLibrary[selectCurrentBook];
 
     const editForm = document.querySelector("#editModal form");
-    
+
     if (editForm.checkValidity()) {
         book.name = document.getElementById("editBookName").value;
         book.author = document.getElementById("editBookAuthor").value;
@@ -195,7 +210,7 @@ editBookSubmit.addEventListener('click', (event) => {
         document.getElementById("editBookPages").value = "";
         document.getElementById("editBookRead").checked = false;
     } else {
-      
+
         editForm.reportValidity();
     }
 });
